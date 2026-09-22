@@ -17,6 +17,8 @@ kubectl get pvc
 The pods stay `Pending` for a few seconds while the volume is created. Run the `get pods` command again until both rows say `Running` before you answer, and before you write a note.
 
 **Q1.** What do you observe about the pods?
+Both pods have the same age, and seem like they might be two separate instances/replicas of the same pod since they have almost identical names except for the suffix/last 5-character code that might just be added to the name everytime a unique pod instance is created. 
+Also when we do get pvc, there is only one pvc, so the two pods are sharing one volume. 
 
 ## 2. Write on one pod, read on the other
 
@@ -29,6 +31,7 @@ kubectl get pvc
 ```
 
 **Q2.** What do you observe about the note, and about the volumes?
+Even when we write the note from one pod, we are able to read it from the other pod.. this indicates that they are both sharing the same volume.
 
 ## 3. Remove the Deployment
 
@@ -51,6 +54,8 @@ kubectl get pods -l app=note -w
 
 **Q3.** In what order did the pods start, and what are they named?
 
+The pods were started in the order 0, then 1, and were named note-0 and note-1. 
+
 ## 5. A different note on each pod
 
 ```bash
@@ -62,6 +67,7 @@ kubectl get pvc
 ```
 
 **Q4.** How does this differ from what you saw in Q2?
+It created two new pods and printed both out hello-from-0 and hello-from-1 in order, and created two separate pvc's this time with two separate volumes, with the pvc's named as data-note-0 and data-note-1. 
 
 ## 6. Delete note-0
 
@@ -81,6 +87,8 @@ kubectl get pvc
 ```
 
 **Q5.** After `note-0` was deleted and came back, what stayed the same? How do these volumes differ from the Deployment?
+
+Even after note-0 was deleted and came back, the volume and pvc names/hashcode/identifiers still stayed the exact same. 
 
 ## Cleanup
 
